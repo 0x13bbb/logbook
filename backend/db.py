@@ -19,7 +19,7 @@ class Database:
         with self.get_connection() as conn:
             c = conn.cursor()
 
-            # Create mood table
+            # Mood table
             c.execute('''
                 CREATE TABLE IF NOT EXISTS mood (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -29,13 +29,25 @@ class Database:
                 )
             ''')
 
-            # Create habits table 
+            # Habits table 
             c.execute('''
                 CREATE TABLE IF NOT EXISTS habits (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT NOT NULL,
                     completed TEXT CHECK (completed IN ('yes', 'no', 'unable')),
                     time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            ''')
+
+            # Milestones table
+            c.execute('''
+                CREATE TABLE IF NOT EXISTS milestones (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    habit_id INTEGER NOT NULL,
+                    streak_target INTEGER NOT NULL,
+                    reward TEXT NOT NULL,
+                    FOREIGN KEY (habit_id) REFERENCES habits (id)
+                        ON DELETE CASCADE
                 )
             ''')
 
@@ -100,5 +112,63 @@ class Database:
                 conn.rollback()
                 return None
 
-# Create a singleton instance
+    def insert_habit(self, name: str, completed: str) -> Optional[Dict[str, Any]]:
+        with self.get_connection() as conn:
+            c = conn.cursor()
+            
+            try:
+                c.execute(
+                    'INSERT INTO habits (name, completed) VALUES (?, ?)', 
+                    (name, completed)
+                )
+                habit_id = c.lastrowid
+                
+                c.execute(
+                    'SELECT id, name, completed, time FROM habits WHERE id = ?',
+                    (habit_id,)
+                )
+                habit = c.fetchone()
+                
+                conn.commit()
+                
+                return {
+                    'id': habit[0],
+                    'name': habit[1], 
+                    'completed': habit[2],
+                    'time': habit[3]
+                }
+                
+            except sqlite3.Error:
+                conn.rollback()
+                return None
+    
+    def get_habits(self, name: str) -> Optional[Dict[str, Any]]:
+        with self.get_connection() as conn:
+            c = conn.cursor()
+
+            try:
+                c.execute(
+                    'SELECT id, name, completed, time FROM habits WHERE name = ?', 
+                    (name,)
+                )
+
+                moods = c.fetchall()
+                
+                if not moods:
+                    return None
+                    
+                return [
+                    {
+                        'id': mood[0],
+                        'name': mood[1],
+                        'completed': mood[2], 
+                        'time': mood[3]
+                    }
+                    for mood in moods
+                ]
+                    
+            except sqlite3.Error:
+                conn.rollback()
+                return None
+
 db = Database()

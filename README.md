@@ -3,15 +3,17 @@ I'm writing a personal tool to track my mood and some habits. These are just my 
 
 ## todo
 - [ ] backend
-    - [ ] score and track metrics
-    - [ ] track habits
-        - [ ] set habit milestones + incentives
+    - [x] track moods
+        - [x] get/set moods
+    - [ ] habits
+        - [x] get/set habits
+        - [ ] get/set habit milestones + incentives
     - [ ] notifier
     - [ ] auto-open on schedule?
 - [ ] frontend
-    - [ ] score metrics
+    - [ ] score moods
     - [ ] track habits
-    - [ ] metrics dashboard
+    - [ ] mood/habit dashboard
  
 ## what problem am I solving?
 These are the key aspects of stress, to me, that accentuate a negative feedback loop:
@@ -97,3 +99,9 @@ Frontend: idk yet
     - name: journaling, exercise etc.
     - completed: yes | no | unable
     - time: datetime
+    - milestones
+        - streak_target
+        - reward
+
+## ideas and tangents
+Are there any ways I could have the app anticipate mood and get a measure?

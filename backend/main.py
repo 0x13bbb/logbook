@@ -45,18 +45,18 @@ def insert_mood(mood: MoodCreate):
         "time": created_mood["time"]
     }
 
-class MoodQuery(BaseModel):
+class NameQuery(BaseModel):
+    name: str
+    
     @validator('name')
     def validate_name(cls, v):
         if not v.strip():
             raise ValueError('Name cannot be empty')
-        return v.strip().lower()
-    
-    name: str
+        return v.strip().lower() 
 
 @app.get("/mood/{name}")
 def get_mood(name: str):
-    query = MoodQuery(name=name)
+    query = NameQuery(name=name)
     
     moods = db.get_mood(query.name)
     if moods is None:
@@ -65,3 +65,50 @@ def get_mood(name: str):
             detail=f"No mood entries found for name: {name}"
         )
     return moods
+
+class HabitCreate(BaseModel):
+    name: str
+    completed: str
+
+    @validator('completed')
+    def validate_completed(cls, v):
+        if v not in ["yes", "no", "unable"]:
+            raise ValueError('Completed must be yes, no or unable.')
+        return v
+
+    @validator('name')
+    def validate_name(cls, v):
+        if not v.strip():
+            raise ValueError('Name cannot be empty')
+        return v.strip().lower()
+
+@app.post("/habits")
+def insert_habit(habit: HabitCreate):
+    created_habit = db.insert_habit(habit.name, habit.completed)
+    if not created_habit:
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to create habit entry"
+        )
+
+    return {
+        "id": created_habit["id"],
+        "name": created_habit["name"],
+        "completed": created_habit["completed"],
+        "time": created_habit["time"]
+    }
+
+@app.get("/habits/{name}")
+def get_habits(name: str):
+    query = NameQuery(name=name)
+    
+    habits = db.get_habits(query.name)
+    if habits is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"No habit entries found for name: {name}"
+        )
+    return habits
+
+# TODO set milestones
+# TODO get milestones by habit
