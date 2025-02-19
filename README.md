@@ -7,6 +7,7 @@ I'm writing a personal tool to track my mood and some habits. These are just my 
     - [ ] track habits
         - [ ] set habit milestones + incentives
     - [ ] notifier
+    - [ ] auto-open on schedule?
 - [ ] frontend
     - [ ] score metrics
     - [ ] track habits
@@ -73,3 +74,16 @@ The properties I want are:
 ## guiding principles
 1. Every notification has truly useful/actionable information.
 2. Absolutely minimize the number of actions that the user needs to take.
+
+## execution
+So what do I want the execution of this idea to look like?
+- Want the system to have minimal portability issues and system requirements
+- But also don't want to ever have to update the app as data grows
+- Actually want to complete the project so focus on what's most useful to me first, any other improvements/generalisations are a plus
+    - Therefore, want backend logic to be easily modifiable by other people because I can't be bothered to fully generalize the notifier logic
+
+At first, I just want this to be a little app that just runs locally (privacy). And for sharing it'll just generate and send images + text. No need to be a central platform.
+
+Data: SQLite
+Backend: Python FastAPI
+Frontend: idk yet
