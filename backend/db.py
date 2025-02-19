@@ -71,5 +71,34 @@ class Database:
                 conn.rollback()
                 return None
 
+    def get_mood(self, name: str) -> Optional[Dict[str, Any]]:
+        with self.get_connection() as conn:
+            c = conn.cursor()
+
+            try:
+                c.execute(
+                    'SELECT id, name, score, time FROM mood WHERE name = ?', 
+                    (name,)
+                )
+
+                moods = c.fetchall()
+                
+                if not moods:
+                    return None
+                    
+                return [
+                    {
+                        'id': mood[0],
+                        'name': mood[1],
+                        'score': mood[2], 
+                        'time': mood[3]
+                    }
+                    for mood in moods
+                ]
+                    
+            except sqlite3.Error:
+                conn.rollback()
+                return None
+
 # Create a singleton instance
 db = Database()

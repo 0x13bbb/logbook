@@ -1,5 +1,5 @@
 import asyncio
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from db import db
 from pydantic import BaseModel, validator
 
@@ -27,7 +27,7 @@ class MoodCreate(BaseModel):
     def validate_name(cls, v):
         if not v.strip():
             raise ValueError('Name cannot be empty')
-        return v.strip()
+        return v.strip().lower()
 
 @app.post("/mood")
 def insert_mood(mood: MoodCreate):
@@ -37,9 +37,31 @@ def insert_mood(mood: MoodCreate):
             status_code=500,
             detail="Failed to create mood entry"
         )
+
     return {
         "id": created_mood["id"],
         "name": created_mood["name"],
         "score": created_mood["score"],
         "time": created_mood["time"]
     }
+
+class MoodQuery(BaseModel):
+    @validator('name')
+    def validate_name(cls, v):
+        if not v.strip():
+            raise ValueError('Name cannot be empty')
+        return v.strip().lower()
+    
+    name: str
+
+@app.get("/mood/{name}")
+def get_mood(name: str):
+    query = MoodQuery(name=name)
+    
+    moods = db.get_mood(query.name)
+    if moods is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"No mood entries found for name: {name}"
+        )
+    return moods
