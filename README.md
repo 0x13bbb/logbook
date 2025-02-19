@@ -2,15 +2,15 @@
 I'm writing a personal tool to track my mood and some habits. These are just my personal observations/opinions--YMMV. Just going to dump the entire spec here.
 
 ## todo
-- [] backend
-    - [] score and track metrics
-    - [] track habits
-        - [] set habit milestones + incentives
-    - [] notifier
-- [] frontend
-    - [] score metrics
-    - [] track habits
-    - [] metrics dashboard
+- [ ] backend
+    - [ ] score and track metrics
+    - [ ] track habits
+        - [ ] set habit milestones + incentives
+    - [ ] notifier
+- [ ] frontend
+    - [ ] score metrics
+    - [ ] track habits
+    - [ ] metrics dashboard
  
 ## what problem am I solving?
 These are the key aspects of stress, to me, that accentuate a negative feedback loop:
