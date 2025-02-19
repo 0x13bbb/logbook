@@ -87,3 +87,13 @@ At first, I just want this to be a little app that just runs locally (privacy). 
 Data: SQLite
 Backend: Python FastAPI
 Frontend: idk yet
+
+### data structures
+- mood
+    - name: e.g. stress, contentment, etc.
+    - score: 1-5
+    - time: datetime
+- habits
+    - name: journaling, exercise etc.
+    - completed: yes | no | unable
+    - time: datetime
