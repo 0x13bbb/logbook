@@ -8,10 +8,6 @@ app = FastAPI()
 @app.on_event("startup")
 def startup():
     db.init_db()
-
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
     
 class MoodCreate(BaseModel):
     name: str
@@ -110,5 +106,57 @@ def get_habits(name: str):
         )
     return habits
 
-# TODO set milestones
-# TODO get milestones by habit
+class MilestoneCreate(BaseModel):
+    habit_name: str 
+    streak_target: int
+    reward: str
+
+    @validator('habit_name')
+    def validate_habit_name(cls, v):
+        if not v.strip():
+            raise ValueError('Habit name cannot be empty')
+        return v.strip().lower()
+
+    @validator('streak_target')
+    def validate_streak_target(cls, v):
+        if v < 1:
+            raise ValueError('Streak target must be at least 1')
+        return v
+
+    @validator('reward')
+    def validate_reward(cls, v):
+        if not v.strip():
+            raise ValueError('Reward cannot be empty')
+        return v.strip()
+
+@app.post("/milestones")
+def insert_milestone(milestone: MilestoneCreate):
+    created_milestone = db.insert_milestone(
+        milestone.habit_name,
+        milestone.streak_target,
+        milestone.reward
+    )
+    if not created_milestone:
+        raise HTTPException(
+            status_code=500, 
+            detail="Failed to create milestone"
+        )
+
+    return {
+        "id": created_milestone["id"],
+        "habit_name": created_milestone["habit_name"],
+        "streak_target": created_milestone["streak_target"],
+        "reward": created_milestone["reward"]
+    }
+
+@app.get("/milestones/{habit_name}")
+def get_milestones(habit_name: str):
+    query = NameQuery(name=habit_name)
+    
+    milestones = db.get_milestones(query.name)
+    if milestones is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"No milestones found for habit: {habit_name}"
+        )
+    return milestones

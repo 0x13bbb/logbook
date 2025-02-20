@@ -43,11 +43,9 @@ class Database:
             c.execute('''
                 CREATE TABLE IF NOT EXISTS milestones (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    habit_id INTEGER NOT NULL,
+                    habit_name TEXT NOT NULL,
                     streak_target INTEGER NOT NULL,
-                    reward TEXT NOT NULL,
-                    FOREIGN KEY (habit_id) REFERENCES habits (id)
-                        ON DELETE CASCADE
+                    reward TEXT NOT NULL
                 )
             ''')
 
@@ -171,4 +169,68 @@ class Database:
                 conn.rollback()
                 return None
 
+    def insert_milestone(self, habit_name: str, streak_target: int, reward: str) -> Optional[Dict[str, Any]]:
+        with self.get_connection() as conn:
+            c = conn.cursor()
+            
+            try:
+                habits = self.get_habits(habit_name)
+                if not habits:
+                    return None
+                
+                c.execute(
+                    'INSERT INTO milestones (habit_name, streak_target, reward) VALUES (?, ?, ?)',
+                    (habit_name, streak_target, reward)
+                )
+                milestone_id = c.lastrowid
+                
+                c.execute(
+                    'SELECT id, habit_name, streak_target, reward FROM milestones WHERE id = ?',
+                    (milestone_id,)
+                )
+                milestone = c.fetchone()
+                
+                conn.commit()
+                
+                return {
+                    'id': milestone[0],
+                    'habit_name': milestone[1],
+                    'streak_target': milestone[2],
+                    'reward': milestone[3]
+                }
+                
+            except sqlite3.Error:
+                conn.rollback()
+                return None
+            
+    def get_milestones(self, habit_name: str) -> Optional[Dict[str, Any]]:
+        with self.get_connection() as conn:
+            c = conn.cursor()
+
+            try:
+                c.execute(
+                    'SELECT id, habit_name, streak_target, reward FROM milestones WHERE habit_name = ?',
+                    (habit_name,)
+                )
+
+                milestones = c.fetchall()
+                
+                if not milestones:
+                    return None
+                    
+                return [
+                    {
+                        'id': milestone[0],
+                        'habit_name': milestone[1],
+                        'streak_target': milestone[2],
+                        'reward': milestone[3]
+                    }
+                    for milestone in milestones
+                ]
+                    
+            except sqlite3.Error:
+                conn.rollback()
+                return None
+
+db = Database()
 db = Database()
