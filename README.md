@@ -9,11 +9,11 @@ I'm writing a personal tool to track my mood and some habits. These are just my 
         - [x] get/set habits
         - [x] get/set habit milestones + incentives
     - [x] notifier
-    - [ ] protocol
+    - [ ] protocol @emleda
 - [ ] frontend
-    - [ ] score moods
-    - [ ] track habits
-    - [ ] mood/habit dashboard
+    - [ ] score moods @x13
+    - [ ] track habits @x13
+    - [ ] mood/habit dashboard @emleda
 - [ ] someday (stretch)
     - [ ] auto-open on schedule?
 
