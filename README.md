@@ -5,103 +5,32 @@ I'm writing a personal tool to track my mood and some habits. These are just my 
 - [ ] backend
     - [x] track moods
         - [x] get/set moods
-    - [ ] habits
+    - [x] habits
         - [x] get/set habits
-        - [ ] get/set habit milestones + incentives
-    - [ ] notifier
-    - [ ] auto-open on schedule?
+        - [x] get/set habit milestones + incentives
+    - [x] notifier
+    - [ ] protocol
 - [ ] frontend
     - [ ] score moods
     - [ ] track habits
     - [ ] mood/habit dashboard
- 
-## what problem am I solving?
-These are the key aspects of stress, to me, that accentuate a negative feedback loop:
-1. **Loss of objectivity**: stress itself distorts your perception--maintaining awareness of your mood, in the aggregate, can be difficult.
-2. **Lack of visibility**: stress can be exacerbated by a tendency to *ignore how you feel and push through*. Don't get me wrong, I think persistence is great, but there's plenty of evidence to show that maintaining elevated levels of stress in the medium to long term is detrimental to your health. 
-3. **Diminished communication**: when you're stressed you tend to be more irritable and that makes it harder to reach out to people.
-4. **Regression**: when you're stressed you may tend to withdraw socially, and stop habits that are ironically constructive for you because you are "too busy".
+- [ ] someday (stretch)
+    - [ ] auto-open on schedule?
 
-## how does this tool help?
-The above problem set tells me that if you're often in high stress situations/periods what you really need is an antifragile system. Another way to put this is concept vs execution. I want to be able to set some guidelines/protocols ahead of time that execute without additional effort.
+## installation (mac)
+### backend
+Python version: 3.12.3
+1. you can check your version `python --version` if you are already on this version the below is optional
+2. if you want to use pyenv (python version manager) `brew install pyenv`
+3. set your local with `pyenv local 3.12`
 
-Example cases where the system would notify you and optionally those closest to you:
-- If you have been sustaining an elevated level of stress
-- If your stress is spiking/increasing
-- If you start to show signs of regression in your habits
-- If you are experience increasing negative emotionality
+Set up your virtual environment
+1. cd to `/backend`
+2. create a virtual environment called `.venv` with `python -m venv .venv`
+3. activate the virtual environment with `source .venv/bin/activate`
 
-Another aspect is that I think you can design the app such that you are more likely to actually use it. Simple hacks like how when you open Duolingo it'll immediately put you into the next lesson (reducing user actions). Visual stimulus, rewards, milestones etc.
+Installing prerequisites
+1. `pip install -r requirements.txt`
 
-## definitions
-So I'll define stress levels and associated actions.
-1. minimal stress
-    - calm and in control
-    - sleep is good
-    - habits maintained
-    - normal functioning
-    - action: maintain
-2. mild stress
-    - slight irritability
-    - minor sleep changes
-    - occasional worries
-    - slightly decreased focus
-    - action: self care
-3. moderate stress
-    - disrupted sleep
-    - increased irritablity
-    - appetite changes
-    - headaches, tension
-    - missing some habits
-    - action: scale back commitments
-4. high stress
-    - persistent sleep issues
-    - moody
-    - social withdrawal
-    - self-neglect
-    - action: seriously involve support system, consider professional help
-5. severe stress
-    - burning out
-    - inability to funciton
-    - health declining
-    - persistent negative thoguhts
-    - overwhelming anxiety
-    - action: immediate professional intervention
-
-### habits
-The properties I want are:
-- Forgiveness - option to mark a habit as uncompleted (reasons outside of control) e.g. Duolingo streak freezes
-- Incentives
-
-## guiding principles
-1. Every notification has truly useful/actionable information.
-2. Absolutely minimize the number of actions that the user needs to take.
-
-## execution
-So what do I want the execution of this idea to look like?
-- Want the system to have minimal portability issues and system requirements
-- But also don't want to ever have to update the app as data grows
-- Actually want to complete the project so focus on what's most useful to me first, any other improvements/generalisations are a plus
-    - Therefore, want backend logic to be easily modifiable by other people because I can't be bothered to fully generalize the notifier logic
-
-At first, I just want this to be a little app that just runs locally (privacy). And for sharing it'll just generate and send images + text. No need to be a central platform.
-
-Data: SQLite
-Backend: Python FastAPI
-Frontend: idk yet
-
-### data structures
-- mood
-    - name: e.g. stress, contentment, etc.
-    - score: 1-5
-    - time: datetime
-- habits
-    - name: journaling, exercise etc.
-    - completed: yes | no | unable
-    - time: datetime
-    - milestones
-        - streak_target
-        - reward
-
-## ideas and tangents
-Are there any ways I could have the app anticipate mood and get a measure?
+Running the backend
+1. `fastapi dev main.py`
