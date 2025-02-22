@@ -17,39 +17,13 @@ Example cases where the system would notify you and optionally those closest to 
 Another aspect is that I think you can design the app such that you are more likely to actually use it. Simple hacks like how when you open Duolingo it'll immediately put you into the next lesson (reducing user actions). Visual stimulus, rewards, milestones etc.
 
 ## definitions
-So I'll define stress levels and associated actions.
-1. minimal stress
-    - calm and in control
-    - sleep is good
-    - habits maintained
-    - normal functioning
-    - action: maintain
-2. mild stress
-    - slight irritability
-    - minor sleep changes
-    - occasional worries
-    - slightly decreased focus
-    - action: self care
-3. moderate stress
-    - disrupted sleep
-    - increased irritablity
-    - appetite changes
-    - headaches, tension
-    - missing some habits
-    - action: scale back commitments
-4. high stress
-    - persistent sleep issues
-    - moody
-    - social withdrawal
-    - self-neglect
-    - action: seriously involve support system, consider professional help
-5. severe stress
-    - burning out
-    - inability to funciton
-    - health declining
-    - persistent negative thoguhts
-    - overwhelming anxiety
-    - action: immediate professional intervention
+Changed my mind, I think mood have natural poles (e.g. stress/relaxation, content/discontent). As well as 5 being too much gradation for unipolar data.
+
+- -2 - very stressed
+- -1 - somewhat stressed
+- 0 - neutral
+- 1 - somewhat relaxed
+- 2 - very relaxed
 
 ### habits
 The properties I want are:
@@ -76,7 +50,7 @@ Frontend: idk yet
 ### data structures
 - mood
     - name: e.g. stress, contentment, etc.
-    - score: 1-5
+    - score: -2 to 2
     - time: datetime
 - habits
     - name: journaling, exercise etc.
@@ -86,5 +60,9 @@ Frontend: idk yet
         - streak_target
         - reward
 
-## ideas and tangents
-Are there any ways I could have the app anticipate mood and get a measure?
+## actionability
+1. immediate action required
+    - quite serious: stress should be elevated or confluence with other factors
+    - can be clearer cut
+2. pulse
+    - confluence
