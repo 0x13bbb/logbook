@@ -2,6 +2,7 @@ import asyncio
 from fastapi import FastAPI, HTTPException
 from db import db
 from pydantic import BaseModel, validator
+from protocol import proto
 
 app = FastAPI()
 
@@ -81,6 +82,10 @@ class HabitCreate(BaseModel):
 @app.post("/habits")
 def insert_habit(habit: HabitCreate):
     created_habit = db.insert_habit(habit.name, habit.completed)
+    
+    # TODO @emleda uncomment to run_check
+    # proto.run_check()
+
     if not created_habit:
         raise HTTPException(
             status_code=500,
