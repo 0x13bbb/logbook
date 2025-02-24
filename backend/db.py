@@ -232,5 +232,6 @@ class Database:
                 conn.rollback()
                 return None
 
-db = Database()
+
+
 db = Database()

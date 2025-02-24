@@ -35,23 +35,7 @@ class EmailNotifier:
             print(f"Failed to send email: {str(e)}")
             return False
 
-
-if __name__ == "__main__":
-    notifier = EmailNotifier(
-        sender_email=config.EMAIL_SENDER,
-        app_password=config.EMAIL_PASSWORD
-    )
-    
-    # Send to single recipient
-    # notifier.send_notification(
-    #     "briannguyen013@gmail.com",
-    #     "Test Notification",
-    #     "This is a test message"
-    # )
-    
-    # Send to multiple recipients
-    notifier.send_notification(
-        ["elewisdando@gmail.com", "briannguyen013@gmail.com"],
-        "Group Notification",
-        "This is a group message"
-    )
+notifier = EmailNotifier(
+    sender_email=config.EMAIL_SENDER,
+    app_password=config.EMAIL_PASSWORD
+)
